@@ -1,3 +1,6 @@
 [submodule "website/themes/hugo-coder"]
 	path = website/themes/hugo-coder
 	url = https://github.com/luizdepra/hugo-coder
+[submodule "website/themes/hermit"]
+	path = website/themes/hermit
+	url = git@github.com:Track3/hermit.git
