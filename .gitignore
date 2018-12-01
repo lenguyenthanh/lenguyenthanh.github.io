@@ -1,8 +1,0 @@
-# Vagrant
-.vagrant/
-
-# Jekyll
-_site
-.sass-cache
-.jekyll
-website/resources/_gen
