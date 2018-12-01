@@ -3,7 +3,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/disco64"
-  config.vm.network "forwarded_port", guest: 8000, host: 8000, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 1313, host: 8000
   config.vm.hostname = "Thanhs-blog"
   config.vm.define "Thanhs Blog'" do |base|
   config.vm.synced_folder ".", "/src"
@@ -17,7 +17,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Throw in our provisioning script
-  config.vm.provision :shell, :path => "./bootstrap.sh", run: "once", privileged: false
+  config.vm.provision :shell, :path => "./vagrant/bootstrap.sh", run: "once", privileged: false
+  config.vm.provision :shell, :path => "./vagrant/startup.sh", run: "always", privileged: false
 
   config.ssh.forward_agent = true
 end
