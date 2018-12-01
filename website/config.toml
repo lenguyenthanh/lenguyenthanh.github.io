@@ -1,4 +1,4 @@
 baseURL = "http://lenguyenthanh.com/"
 languageCode = "en-us"
 title = "Thanh Le Website"
-theme= "coder"
+theme= "hugo-coder"
