@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on Thanh Le</title>
+    <link>https://lenguyenthanh.com/blog/</link>
+    <description>Recent content in Blogs on Thanh Le</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 01 Dec 2018 11:35:12 +0000</lastBuildDate>
+    
+	<atom:link href="https://lenguyenthanh.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>My blog</title>
+      <link>https://lenguyenthanh.com/blog/first-blog/</link>
+      <pubDate>Sat, 01 Dec 2018 11:35:12 +0000</pubDate>
+      
+      <guid>https://lenguyenthanh.com/blog/first-blog/</guid>
+      <description>I now have a blog. Expect nothing but some writing Mostly technical stuff but hope that some other stuff as well.</description>
+    </item>
+    
+  </channel>
+</rss>
