@@ -6,9 +6,29 @@
     <description>Recent content on Thanh Le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 01 Dec 2018 11:35:12 +0000</lastBuildDate>
     
 	<atom:link href="https://lenguyenthanh.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>My blog</title>
+      <link>https://lenguyenthanh.com/blog/first-blog/</link>
+      <pubDate>Sat, 01 Dec 2018 11:35:12 +0000</pubDate>
+      
+      <guid>https://lenguyenthanh.com/blog/first-blog/</guid>
+      <description>I now have a blog.
+Expect nothing but some writing.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://lenguyenthanh.com/about/</link>
+      <pubDate>Sat, 01 Dec 2018 11:08:03 +0000</pubDate>
+      
+      <guid>https://lenguyenthanh.com/about/</guid>
+      <description> Hello I&amp;rsquo;m Thanh </description>
+    </item>
     
   </channel>
 </rss>
