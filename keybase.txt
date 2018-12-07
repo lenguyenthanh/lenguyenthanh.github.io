@@ -21,6 +21,16 @@ To do so, I am signing this object:
       "uid": "560b14e5c4a4c8d510a6db0b5845d619",
       "username": "thanh"
     },
+    "merkle_root": {
+      "ctime": 1544212160,
+      "hash_meta": "8ca6e6a47a3bd1a0ba2ed170bad8a61fc9c08ac06d5fde7f6887a432fbe965ce",
+      "seqno": 4073897
+    },
+    "revoke": {
+      "sig_ids": [
+        "502364a2b76989fbe108ee8f4a0b427e1aa3d4ba2a43312caea1385b59d549900f"
+      ]
+    },
     "service": {
       "hostname": "lenguyenthanh.com",
       "protocol": "https:"
@@ -28,10 +38,10 @@ To do so, I am signing this object:
     "type": "web_service_binding",
     "version": 1
   },
-  "ctime": 1544209045,
+  "ctime": 1544212171,
   "expire_in": 157680000,
-  "prev": "b5a7b036b17961a87c1a979a31d425e4f05e6fe58f4a3624021328c5cfbe16ef",
-  "seqno": 38,
+  "prev": "22afeb7303f7e1c569280bed8b184a80dc5f93cfa96c0abbbfe3a916692ec46b",
+  "seqno": 39,
   "tag": "signature"
 }
 
@@ -41,30 +51,33 @@ which yields the signature:
 Version: Keybase OpenPGP v2.0.80
 Comment: https://keybase.io/crypto
 
-yMN2AnicZVJtUFRVGN6VhYElBpmwYCCnbjCiLXo/zv0Cxn7A+AWSNQzatLVz7r3n
-sjdwd9kPEHRDiwyQ0UQhBvAbxqaJkI/RxHAWWIcpHZtEAoSCSMMsNkwRmEC7S/qr
-8+fMed/ned7nfeZ4wwI0em3w6dH51ttV27VXu+tcGqO+p3o3JlilIixpN5aLli6U
-JyGH05SrSFgShhMkDiRG4iHDiwItMTjFkxQUoMQBlqUhAQiBoBEEBIULJElyMs/Q
-OM2JFE8LDM/zFM/gEDNgsmLJQXabXbE4VVmRZhiIc6oUxSGJ4XGKlUWK5XAOkpIo
-8wKBAE/SrEo0Wx1+hmpOgA60VrGqNfVh+s/e//HPfOMEABQDBVpADKA4ikIMJbMU
-A2ROUhuCTAHIyOpm6nSCJGSSIQEkRVLEKSCyPEHgS75dS3I0gwsEQLQIIBA5iSZw
-yEgCLtAcUDMheD/QgewWuBOpaKcZWsyY24CppQJFRP5U/Ws8bechS46rCFmWYGtF
-606VbbNbnVbRmqe2zU6nzZHkpzuLbH58IRJMT5VMgmKR1CRVRgGyOxSrBUsiVKTo
-VPzSBA0AifM4oA0Y2mVT7Mik+BE0y3C4evxzUIEqKdCQFXA1BYLlGQJyrEhAnuUh
-RUiApBGQcRoxMqI5GUBKDQYnCYrkRFqUBUQwSMb8u+VbrFgSxak+YY6q6VByLNDp
-siPM3dNt1Gm0ek1Q4DL/F9PoQ5Y/+3gF18MXozz3Di1mam3lG8cP6ua0kcaYn2c/
-6dn2dfHebN+VpqzeGfQEFIZ0h/YEGR7KcYlTvVHXK9LHvupECWe9G45m/p0WvCHp
-2xsnNurXVxo0n21hscsvBbzGPo/yPl84FbCqrLa05sfx15Vvit9KjenMBzXBZdEp
-O07G/zE6t7eiOaErmISR+UEnj9zWZcX2D0882HSrZHTow5Ty0EeR+kr9B2+v+1Rw
-tnw5tV9La8Y6o5Pf85VnGqr0mbUXL7S3ZTeuPPDR3dXz6fZfX2zRHyWey/D8Oc+t
-Sp6pK73vZdJbtt54oDvfH+iZNNYMLw7kVk8PBJdNd6V9HLYQsQ0dnr0WUdfmmkJ9
-d7o2B9y7E3tuZLjmBOadHqnc3N6aWJgewQ1mRDnYF843W6afhNX+IKdIyTHfjby6
-4+HQuqbfarITRhdumjvu99mMDdUrpBpz/FzW8cm2NI8ve03cQn3DscXGl5uvxfk8
-iQmXUtdcDkx8nKvrKNkXvssaN+brbY3+RyEvRpsH61ec/quhfCbQvX5RMxuy/410
-t3br2VjFUJ9TSvEH97m9P727XEo90nLrqtU4NBO651zxoHNLU7/rUlq4pyR+3PT9
-wHJfxbFHsXXTj5fVl556J6hqfiHjff5Ko/4Xx5mJA7G63w913P3CW7V6T9Sb7cdz
-J282bnKvPLw9qx4L115oOtP3ysS/1U3Drg==
-=VJeZ
+yMQAAnicZVNrbBVFGL2Xd28CFMsjKPzZKoRS6MzO7OxOESFWAg3SijVpCdXLzO5s
+e/vYe7l3e2mBUt4xsS0WwYABYxELVp7S1h9SWqoF0koBI1EQRUBeStv4gIoJ4twK
+MdH5s5n9znfO+c7MfD58oMfnHbbr0v3DP27O9na2lZZ4cn1dnSsUHrTKlNQVSqHo
+/4giS0Rcf2HAUlIVAFWALWJRRqjJNYsARFXEOLMMrOsagxhyqAmGIQJcVVXDpkQD
+mmEiqnFCKUWUAKYkK3bAyRPhUDjguJLW1AhhwJBUyBAWoQDptol0AxhMtUybcigw
+VTVdNuYHI7EOaY6ziJgeCMp/cuP/x97/8Y99A4gxIoxrXBCMDIQEQbaOCLYNSxa4
+jTAjtpxMqkMV2ipRMVNN1QQImzqFEPT7Lumn0wjgEAvNxAybhqVBwIjFAdcMLDOB
+NAaMiLDDioVEu/nMyVfKk5ViES4sEv5wMOjGkjXdQKwONYxVKUmAnI5F8v3FwmWy
+zTAZEYRhnSFuQQY4U4UFdRALmxFom9SU85qAWJptCd0mhqEzjFSbCxm6KaSJiFjq
+BJVUDHRkUF06CItosFDExCOBPJlZREldrGhAlTkwleuEGlS2Q2AIYdhYamJVF5Ax
+ZGEpL9kRVE0mGESGxjVqaZhSAGzl1fKYWDgaMPvJY4f0aPgi4eSVlAmnP4TpZrBY
+2gqFg27QDBbJcr7rhiKpsXDcslAMv0xw/yMmPw84lrwnsiMqwpFA0JFhSeR/ctNh
+siJKQ4Gw8AdiCE0nBpArpiOiklJVmS24joA8cAHlXaOqAbiwDA4NzAxgmZpNkWkz
+SkzAOOe2QIxCInHCxIT/GySi0ifLk5wyPoe5JWGhlLcdzx3k8fo8QwYPiD0gjy8u
+/vGzStJGPix4wjq/82Bzu52k+KJXbm9LaB90deeOEXsS19ZNafhGqU17kY4YvC9v
+xvxb01JZozfhDHTH4/fefevY2rjMz9Jm7ajvKG+ofsEa6IafT1ribP/0/P3I1HNP
+Ripr0qMtK49UlBWsbIU58auyf+huTM9whaer+uUZd6Ym8bsn5xxZdbSg+PrCyNnt
+Z6+XNc4OdWL/uV1jdtAO2HIxs7YiM11ffXsBHvV6StzojPmT57Xe2j+7ruKZvj2T
+Fiz1HK48eimv7Vqg4+aJeyNvi3dAo/A2WSk3Jxu4afno5YlfzKwdWDmk7szDCd2V
+05yaFlr188dt2T3rBmx98GZiXUVcwY2q/YsX+Xq9jTOLx3rMl3758I1XprUOn3e5
++sSv90Onozf29rRm0aaJq+Z0zUKLj53adtDd3TX927Rn7z505g5dVmP1ZNcnVGUf
+DExo27234bssPLG0rX7Z+D/Xzx7XcSHLt3DQuuN3+i5MLb/6ZdaQTXVObueDP1qf
+a/5+8O/ZG3zDGvf2Wq1jS9+/mLPm0PrTm041bZpgZ267nLRgzYYr3tfKE+KTuzKe
+PpRzLX7u9ayx955anbGvuSE+v6990pjmXU5uSGlPWUhaNnpqcz8YWvw2Teke9/Vv
+Y+4OQEumHEtr3jI/of5qTeK1caMWbaz+auj4zRU9Pal/fZQTzOg9uZW0rTmweUv6
+gctlvZmfHJ60sarvp78Bnjj/Ww==
+=fC3T
 -----END PGP MESSAGE-----
 
 And finally, I am proving ownership of this host by posting or
@@ -73,4 +86,3 @@ appending to this document.
 View my publicly-auditable identity here: https://keybase.io/thanh
 
 ==================================================================
-
