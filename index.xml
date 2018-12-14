@@ -6,12 +6,9 @@
     <description>Recent content on Thanh Le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 01 Dec 2018 11:35:12 +0000</lastBuildDate>
     
 	<atom:link href="https://lenguyenthanh.com/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-  </channel>
-</rss>="self" type="application/rss+xml" />
     
     
     <item>
@@ -31,8 +28,7 @@ Expect nothing but some writing.</description>
       
       <guid>https://lenguyenthanh.com/about/</guid>
       <description>Hello, it&amp;rsquo;s Thanh Welcome to my website!
-I work as a Android engineer at The Techno Creatives. I love programming, running and playing chess.
-Please check out my blog here or if you&amp;rsquo;d like to get in touch, feel free to say hello through any of the social links below.</description>
+I work as a Android engineer at The Techno Creatives. I love programming, running and playing chess. Please check out my blog here or if you&amp;rsquo;d like to get in touch, feel free to say hello through any of the social links below.</description>
     </item>
     
   </channel>
