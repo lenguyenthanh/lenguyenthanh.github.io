@@ -2,13 +2,33 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Thanh Le</title>
-    <link>https://lenguyenthanh.com/index.html</link>
+    <link>https://lenguyenthanh.com/</link>
     <description>Recent content on Thanh Le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 01 Dec 2018 11:35:12 +0000</lastBuildDate>
     
 	<atom:link href="https://lenguyenthanh.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>My blog</title>
+      <link>https://lenguyenthanh.com/blog/first-blog/</link>
+      <pubDate>Sat, 01 Dec 2018 11:35:12 +0000</pubDate>
+      
+      <guid>https://lenguyenthanh.com/blog/first-blog/</guid>
+      <description>Hello world! I now have a blog.</description>
+    </item>
+    
+    <item>
+      <title>Hey there!</title>
+      <link>https://lenguyenthanh.com/about/</link>
+      <pubDate>Sat, 01 Dec 2018 11:08:03 +0000</pubDate>
+      
+      <guid>https://lenguyenthanh.com/about/</guid>
+      <description>Welcome to my website!
+I&amp;rsquo;m Thanh Le. I work as an Android engineer at The Techno Creatives. I love programming, running and playing chess. Please check out my blog here or if you&amp;rsquo;d like to get in touch, feel free to say hello through any of the social links below.</description>
+    </item>
     
   </channel>
 </rss>
