@@ -13,7 +13,7 @@
       <pubDate>Wed, 19 Jan 2022 11:35:12 +0000</pubDate>
       
       <guid>https://lenguyenthanh.com/blog/flp-imposibility/</guid>
-      <description>Giới thiệu    FLP Impossibillity là một trong những paper quan trọng về distributed system, nó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, 3 tác giả (Fischer, Lynch, Paterson) đã chứng minh rằng không tồn tại consensus protocol cho những hệ thống phân tán không đồng bộ(asynchronous setting) của các node/process mà trong đó các process có thể bị lỗi (faulty/unreliable).</description>
+      <description>Giới thiệu    FLP Impossibillity là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, Ba tác giả (Fischer, Lynch, Paterson) Trong những hệ thống phân tán không đồng bộ, nếu trong hệ thống đó có thể chứa các process lỗi, không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi.</description>
     </item>
     
     <item>

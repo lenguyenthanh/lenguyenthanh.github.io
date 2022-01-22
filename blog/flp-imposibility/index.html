@@ -10,15 +10,15 @@
     
 
     <meta name="author" content="Thanh Le">
-    <meta name="description" content="Giới thiệu    FLP Impossibillity là một trong những paper quan trọng về distributed system, nó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, 3 tác giả (Fischer, Lynch, Paterson) đã chứng minh rằng không tồn tại consensus protocol cho những hệ thống phân tán không đồng bộ(asynchronous setting) của các node/process mà trong đó các process có thể bị lỗi (faulty/unreliable).">
+    <meta name="description" content="Giới thiệu    FLP Impossibillity là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, Ba tác giả (Fischer, Lynch, Paterson) Trong những hệ thống phân tán không đồng bộ, nếu trong hệ thống đó có thể chứa các process lỗi, không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi.">
     <meta name="keywords" content="blog,developer,personal">
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="FLP Impossibility"/>
-<meta name="twitter:description" content="Giới thiệu    FLP Impossibillity là một trong những paper quan trọng về distributed system, nó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, 3 tác giả (Fischer, Lynch, Paterson) đã chứng minh rằng không tồn tại consensus protocol cho những hệ thống phân tán không đồng bộ(asynchronous setting) của các node/process mà trong đó các process có thể bị lỗi (faulty/unreliable)."/>
+<meta name="twitter:description" content="Giới thiệu    FLP Impossibillity là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, Ba tác giả (Fischer, Lynch, Paterson) Trong những hệ thống phân tán không đồng bộ, nếu trong hệ thống đó có thể chứa các process lỗi, không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi."/>
 
     <meta property="og:title" content="FLP Impossibility" />
-<meta property="og:description" content="Giới thiệu    FLP Impossibillity là một trong những paper quan trọng về distributed system, nó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, 3 tác giả (Fischer, Lynch, Paterson) đã chứng minh rằng không tồn tại consensus protocol cho những hệ thống phân tán không đồng bộ(asynchronous setting) của các node/process mà trong đó các process có thể bị lỗi (faulty/unreliable)." />
+<meta property="og:description" content="Giới thiệu    FLP Impossibillity là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, Ba tác giả (Fischer, Lynch, Paterson) Trong những hệ thống phân tán không đồng bộ, nếu trong hệ thống đó có thể chứa các process lỗi, không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://lenguyenthanh.com/blog/flp-imposibility/" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2022-01-19T11:35:12+00:00" />
@@ -118,12 +118,14 @@
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h2>
-<p><a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf">FLP Impossibillity</a> là một trong những paper quan trọng về distributed system, nó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, 3 tác giả (Fischer, Lynch, Paterson) đã chứng minh rằng không tồn tại consensus protocol cho những hệ thống phân tán không đồng bộ(asynchronous setting) của các node/process mà trong đó các process có thể bị lỗi (faulty/unreliable).</p>
-<p>Bài viết này sẽ trình bày lại chứng minh được đưa ra trong paper này. Bài viết này sẽ gồm các bước sau:</p>
+<p><a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf">FLP Impossibillity</a> là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, Ba tác giả (Fischer, Lynch, Paterson) Trong những hệ thống phân tán không đồng bộ, nếu trong hệ thống đó có thể chứa các process lỗi, không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi.</p>
+<p>Bài viết này sẽ trình bày lại chứng minh được đưa ra trong paper trên. Bài viết này sẽ gồm những phần sau:</p>
 <ul>
+<li>Định nghĩa về Consensus</li>
 <li>Phát biểu bài toán (system model)</li>
 <li>Biểu diễn bài toán bằng toán học (formal model)</li>
-<li>Chứng minh</li>
+<li>Nếu lên mệnh đề được đưa ra trong bài báo</li>
+<li>Trình bày chứng minh</li>
 </ul>
 <h2 id="định-nghĩa">
   Định nghĩa
@@ -131,26 +133,27 @@
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h2>
+<p>Chúng ta sẽ bắt đầu bằng một số định nghĩa cần biết về Consensus cũng như Asynchronous</p>
 <h3 id="consensus">
   Consensus
   <a class="heading-link" href="#consensus">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p>Các thuật toán Consensus được dùng để giải quyết bài toán đồng thuận trên hệ thống phân tán. Một thuật toán consensus được coi là hợp lệ nếu thoả mãn 3 điều kiện sau đây:</p>
+<p>Các thuật toán Consensus được dùng để giải quyết bài toán đồng thuận trên hệ thống phân tán. Một thuật toán consensus được coi là hợp lệ nếu thoả mãn ba điều kiện sau đây:</p>
 <ul>
-<li>Tất cả các process bình thường đều sẽ đưa ra quyết định trên một giá trị. (termination)</li>
-<li>Tất cả những process đưa ra quyết định đều quyết định cùng một giá trị. (agreement)</li>
-<li>Giá trị được đồng thuận phải được đề nghị từ một trong các process trong hệ thống. (validity)</li>
+<li><strong>Termination</strong>: Tất cả các process bình thường đều sẽ đưa ra quyết định trên một giá trị.</li>
+<li><strong>Agreement</strong>: Tất cả những process đưa ra quyết định đều quyết định cùng một giá trị.</li>
+<li><strong>Validity</strong>: Giá trị được đồng thuận phải được đề nghị từ một trong các process trong hệ thống.</li>
 </ul>
-<p>Chúng ta sẽ mặc định rằng thuật toán consensus chỉ chính xác khi số lượng process bị lỗi sẽ ít hơn một hằng số được định trước.</p>
+<p>Chúng ta mặc định rằng: Thuật toán consensus chỉ chính xác khi số lượng process bị lỗi sẽ ít hơn một hằng số được định trước.</p>
 <h3 id="asynchronous-model">
   Asynchronous model
   <a class="heading-link" href="#asynchronous-model">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p>Asynchronous là một trong 3 giả định về sự đồng bộ trong hệ thống phân tán (2 giả định còn lại là Synchronous và Partially synchronous). Với Asynchronous model thì chúng ta sẽ có những tính chất sau:</p>
+<p>Asynchronous là một trong 3 giả định về sự đồng bộ trong hệ thống phân tán (2 giả định còn lại là Synchronous và Partially synchronous). Với Asynchronous model, chúng ta sẽ có những tính chất sau:</p>
 <ul>
 <li>Không xác định được tốc độ xử lý của các process</li>
 <li>Message có thể bị deliver trễ với thời gian không xác định</li>
@@ -158,18 +161,23 @@
 <li>Không thể sử dụng các thuật toán dựa vào time out</li>
 <li>Không thể xác định được một process bị lỗi hay chỉ đơn giản là xử lý rất là chậm.</li>
 </ul>
+<p>Giả định về Asynchronous model là một giả định quan trọng khi phát biểu về bài toán.</p>
 <h2 id="system-model">
   System model
   <a class="heading-link" href="#system-model">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h2>
-<p>Khi thiết kế một thuật toán về distributed system thì, <code>system model</code> là tập hợp các điều kiện cần để thuật toán đó có thể hoạt động một cách chính xác.</p>
+<p>Khi thiết kế một thuật toán về distributed system thì <code>system model</code> là tập hợp các điều kiện cần để thuật toán đó có thể hoạt động một cách chính xác.</p>
 <p>Paper này sẽ chứng minh rắng sẽ không tồn tại thuật toán consensus với những điều kiện sau:</p>
 <ul>
 <li>Asynchronos model</li>
-<li>Chỉ cần duy nhất một process bị lỗi (crash-stop failure).</li>
-<li>Không Byzantine failure</li>
+<li>Chỉ cần duy nhất một process bị lỗi
+<ul>
+<li>Ở đây chúng ta chỉ xem xét về lỗi crash-stop failure - trường hợp lỗi đơn giản nhất.</li>
+<li>Do đó với mô hình lỗi phức tạp hơn thì chúng ta sẽ có cùng kết quả.</li>
+</ul>
+</li>
 <li>Messages system là đáng tin cậy (Tất cả các message đều được deliver đến các non-faulty process một và chỉ một lần).</li>
 <li>Consensus:
 <ul>
@@ -185,33 +193,33 @@
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h2>
-<p>Trong section này, chúng ta sẽ biểu diễn hệ thống ở trên dưới dạng toán học, nêu ra kết luận về tính bất khả của bài toán và chứng minh nó.</p>
+<p>Trong phần này, chúng ta sẽ biểu diễn hệ thống ở trên dưới dạng toán học, nêu ra kết luận về tính bất khả của bài toán.</p>
 <h3 id="consensus-protocol-p">
   Consensus Protocol P
   <a class="heading-link" href="#consensus-protocol-p">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p>Một consensus protocol <code>P</code> là một hệ thống phân tán bất động bộ (asynchronous system) bao gồm N process (<code>N &gt;= 2</code>)</p>
+<p>Gọi consensus protocol <code>P</code> là một hệ thống phân tán bất động bộ (asynchronous system) bao gồm N process (<code>N &gt;= 2</code>). Các process có thể trao đổi thông tin bằng cách gửi <code>message</code> thông qua một <code>message system</code>. Các thành phần đó sẽ được định nghĩa như bên dưới.</p>
 <h3 id="process">
   Process
   <a class="heading-link" href="#process">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p>Một process trong sẽ có những thành phần như sau:</p>
+<p>Mỗi một process sẽ có những thành phần như sau:</p>
 <ul>
-<li>1 input register $x_p$ sẽ có giá trị thuộc tập <code>{0, 1}</code></li>
-<li>1 output register $y_p$ sẽ có gía trị thuộc tập <code>{b, 0, 1}</code>
+<li>1 input register $x_p$ sẽ có giá trị thuộc tập <code>{0, 1}</code>.</li>
+<li>1 output register $y_p$ sẽ có gía trị thuộc tập <code>{b, 0, 1}</code>.
 <ul>
-<li>Giá trị khởi tạo sẽ luôn là b; nghĩa là process chưa đưa ra quyết định.</li>
+<li>Giá trị khởi tạo của $y_p$ luôn là b; nghĩa là process chưa đưa ra quyết định.</li>
 <li>Chỉ có thể thay đổi 1 lần  duy nhất a.k.a process chỉ có thể quyết định 1 lần duy nhất.</li>
 </ul>
 </li>
 <li>1 bộ nhớ trong vô hạn</li>
 <li>Một thuật toán consensus - hay còn gọi là transistion function(TF).
 <ul>
-<li>TF là một deterministic function (cùng input sẽ có cùng output)</li>
+<li>TF là một deterministic function (cùng input sẽ có cùng output).</li>
 </ul>
 </li>
 </ul>
@@ -233,7 +241,7 @@
 <ul>
 <li><code>p</code> là địa chỉ đến process p</li>
 <li><code>m</code> là nội dung của message
-Gọi tập <code>M</code> sẽ là tập hợp của tất cả các <code>m</code>.</li>
+Gọi tập <code>M</code> sẽ là tập hợp của tất cả các <code>message</code>.</li>
 </ul>
 <h4 id="message-buffer">
   Message Buffer
@@ -243,91 +251,94 @@ Gọi tập <code>M</code> sẽ là tập hợp của tất cả các <code>m</c
 </h4>
 <p>Tất cả các message (đã gửi nhưng chưa được nhận) sẽ được lưu trữ trong một cơ sở dữ liệu tên là <code>multiset</code> được gọi là <code>message buffer(MB)</code>.</p>
 <p><code>Multiset</code> sẽ khác với <code>set</code> thông thường ở một điểm đó là nó có thể lưu nhiều phần tử có giá trị giống nhau.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">val ms = Multiset&lt;Int&gt;()
-ms.add(1) // {(1, 1)}
-ms.add(1) // {(1, 2)}
-ms.remove(1) // {(1, 0)}
-</code></pre></div><p><code>Message buffer</code> có 2 function:</p>
+<p>Sau đây là Pseudocode ví dụ về cách mà <code>Multiset</code> hoạt động</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">val ms = Multiset&lt;Int&gt;() // {} -- bắt đầu với tập rỗng
+ms.add(1) // {(1, 1)} -- phần tử 1 có mặt một lần
+ms.add(1) // {(1, 2)} -- phần tử 1 có mặt hai lần
+ms.remove(1) // {(1, 1)} -- phần tử 1 có mặt một lần
+ms.remove(1) // {(} -- trở về với tập rỗng
+</code></pre></div><p><code>Message buffer</code> có hỗ trợ 2 hàm sau:</p>
 <ul>
 <li><code>send(p, m)</code>: thêm <code>p, m</code> vào <code>MB</code> - luôn luôn thành công</li>
-<li><code>receive(p)</code>: Dùng cho các process nhận message từ <code>MB</code>. Có 2 trường hợp có thể xảy ra khi một gọi function này:
+<li><code>receive(p)</code>: Dùng cho các process nhận message từ <code>MB</code>. Có 2 trường hợp có thể xảy ra khi một process gọi  này:
 <ul>
-<li>Trong trường hợp tồn tại <code>(p, m)</code> trong <code>MB</code> thì function này hoặc trả về một cặp <code>(p, m)</code> sau đó xoá <code>(p, m)</code> khỏi <code>MB</code> hoặc trả về $\phi$ - giá trị null.</li>
+<li>Trong trường hợp tồn tại một cặp <code>(p, m)</code> trong <code>MB</code> thì function này hoặc trả về một cặp <code>(p, m)</code> sau đó xoá <code>(p, m)</code> khỏi <code>MB</code> hoặc trả về $\phi$ - giá trị null một cách ngẫu nhiên.</li>
 <li>Nếu p không có message nào trong <code>MB</code> trả về $\phi$ (hay null)</li>
 </ul>
 </li>
 </ul>
-<p>Function <code>receive</code> sẽ thoả mãn những điều kiện sau đây:</p>
+<p>Function <code>receive</code> thoả mãn những điều kiện sau đây:</p>
 <ul>
-<li>Nó có thể trả $\phi$ hữu hạn nhưng không xác định lần</li>
+<li>Nó có thể trả $\phi$ hữu hạn nhưng không xác định lần.</li>
 <li>Nếu một process <code>p</code> thực hiện <code>receive(p)</code> vô hạn lần thì nó sẽ (eventually) nhận được toàn bộ message được gửi cho nó.</li>
 </ul>
-<p>Ta có thể thấy cái <code>MB</code> này mô phỏng tính chất của <code>asynchronous system</code> (tính non-deterministic). Các messages có thể bị chậm với một thời gian không xác định trước, nhưng nó sẽ dần dần được deliver.</p>
-<h4 id="configuration">
+<p>Ta có thể thấy cái <code>MB</code> này mô phỏng tính chất của <code>asynchronous model</code> (tính non-deterministic). Các messages có thể bị chậm với một thời gian không xác định trước, nhưng nó sẽ dần dần được deliver (với điều kiện là các process gọi hàm <code>receive</code> vô hạn lần).</p>
+<h3 id="configuration">
   Configuration
   <a class="heading-link" href="#configuration">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
-</h4>
+</h3>
 <p>Một <code>Configuration (C)</code> của hệ thống bao gồm:</p>
 <ul>
 <li><code>internal state</code> của tất cả process</li>
-<li>MB</li>
+<li>Toàn bộ message trong <code>Message Buffer</code></li>
 </ul>
 <p><code>Initial Configuration (IC)</code> bao gồm:</p>
 <ul>
 <li><code>initial state</code> của tất cả process</li>
-<li>MB là tập rỗng</li>
+<li><code>Message Buffer</code> là tập rỗng</li>
 </ul>
-<h4 id="step">
+<h3 id="step">
   Step
   <a class="heading-link" href="#step">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
-</h4>
+</h3>
 <p><code>Step</code> là sự thay đổi của <code>Configuration</code> trong hệ thống với việc một process <code>p</code> làm những bước như sau:</p>
 <ol>
-<li><code>(m, MB') = MB.receive(p)</code>
+<li>p thực thi hàm receive.
 <ul>
+<li><code>(m, MB') = MB.receive(p)</code> Với</li>
 <li>$m \in M \cup \phi$</li>
 <li>$MB' = MB \setminus m$</li>
 </ul>
 </li>
-<li><code>e = (p, m)</code>, e sẽ được gọi là một <code>Event</code></li>
-<li>$(p_I', MS) = e(p) = TF(e, p_I)$ (<code>e(p)</code> được gọi là apply e vào p).
+<li>Cho <code>e = (p, m)</code>, e sẽ được gọi là một <code>Event</code></li>
+<li>Sử dụng transistion function để apply event <code>e</code> vào <code>p</code>:
 <ul>
-<li>Apply transition function TF với event <code>e</code> cho <code>p</code></li>
+<li>$(p_I', MS) = e(p) = TF(e, p_I)$</li>
 <li>$p_I'$ là state mới của p sau khi apply <code>e(p)</code></li>
-<li><code>MS</code> là một tập message mới mà p muốn gửi sau khi apply <code>e(p)</code></li>
+<li><code>MS</code> là một tập message mới mà p muốn gửi tới <code>MB</code> khi apply <code>e(p)</code></li>
 </ul>
 </li>
-<li>$MB'' = MB' \cup MS$</li>
-<li>$C' = C(p_I', MB'')$</li>
+<li>Gửi message đến <code>Message Buffer</code>: $MB'' = MB' \cup MS$</li>
+<li>Configuration mới: $C' = C(p_I', MB'')$</li>
 </ol>
 <p>Vì <code>TF</code> là một deterministic function nên với mỗi <code>Configuraton</code> kết quả của mỗi <code>Step</code> sẽ phụ thuộc hoàn toàn vào event <code>e=(p,m)</code>.</p>
 <p>Hay <code>step: C' = e(C)</code></p>
-<h4 id="schedule">
-  Schedule
-  <a class="heading-link" href="#schedule">
-    <i class="fa fa-link" aria-hidden="true"></i>
-  </a>
-</h4>
-<p>Một <code>schedule</code> từ <code>C</code> là một dãy hữu hạn/vô hạn event $\sigma$ mà chúng có thể apply lần lượt, bắt đầu từ <code>C</code>.</p>
-<ul>
-<li>$\sigma = {e_1, e_2, \cdots, e_n}$</li>
-<li>$\sigma(C) = e_n(\cdots, e_2(e_1(C))$</li>
-</ul>
-<p>Tất cả các bước apply $\sigma$ vào <code>C</code> thì được gọi là <code>run</code>.
-Một configuration <code>C1</code> được gọi là <code>reachable</code> từ <code>C</code> nếu tồn tại một chuỗi hữu hạn $\sigma$ thoả mãn: $C1 = $\sigma(C)$
-Một configuration có thể <code>reachable</code> từ một initial configuration thì được gọi là <code>accessible</code>.</p>
-<p>Từ nay về sau, configuration được nhắc đến đều được ngụ ý là một <code>accessible</code> configuration.</p>
 <h4 id="faultynon-faulty-process">
-  faulty/non-faulty process
+  Faulty/non-faulty process
   <a class="heading-link" href="#faultynon-faulty-process">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h4>
-<p>Một process <code>p</code> được coi là hoạt động bình thường (nonfaulty) khi nó sẽ thực thi <code>step</code> vô hạn lần nếu không thì sẽ được coi là lỗi (faulty).</p>
+<p>Một process <code>p</code> được coi là hoạt động bình thường (nonfaulty) khi nó sẽ thực thi <code>step</code> vô hạn lần nếu không thì sẽ được coi là lỗi (faulty). Tương đương với việc gọi <code>receive(p)</code> vô hạn lần.</p>
+<h3 id="schedule">
+  Schedule
+  <a class="heading-link" href="#schedule">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>Một <code>schedule</code> từ <code>C</code> là một chuỗi hữu hạn/vô hạn event $\sigma$ mà chúng có thể apply từng <code>event</code> lần lượt, bắt đầu từ <code>C</code>.</p>
+<ul>
+<li>$\sigma = {e_1, e_2, \cdots, e_n}$</li>
+<li>$\sigma(C) = e_n(\cdots, e_2(e_1(C))$</li>
+</ul>
+<p>Tất cả các bước apply $\sigma$ vào <code>C</code> thì được gọi là <code>run</code>.</p>
+<p>Một configuration <code>C1</code> được gọi là <code>reachable</code> từ <code>C</code> nếu tồn tại một chuỗi hữu hạn $\sigma$ thoả mãn: $C1 = $\sigma(C)$.</p>
+<p>Một configuration có thể <code>reachable</code> từ một initial configuration thì được gọi là <code>accessible</code>.</p>
+<p>Từ nay về sau, các configuration được nhắc đến đều được ngụ ý là một <code>accessible</code> configuration.</p>
 <h4 id="một-số-khái-niệm-khác-về-run">
   Một số khái niệm khác về <code>run</code>
   <a class="heading-link" href="#m%e1%bb%99t-s%e1%bb%91-kh%c3%a1i-ni%e1%bb%87m-kh%c3%a1c-v%e1%bb%81-run">
@@ -335,7 +346,7 @@ Một configuration có thể <code>reachable</code> từ một initial configur
   </a>
 </h4>
 <p>Một configuration C có <code>decision value</code> khi tồn tại ít nhất một process p ở <code>decision state</code> hay $y_p = v; v \in {0, 1}$.</p>
-<p><code>Run</code> được gọi là <code>admissible</code> nếu có tối đa một process lỗi, và toàn bộ mesage được gửi tới các non-faulty process đều được nhận.</p>
+<p><code>Run</code> được gọi là <code>admissible</code> nếu nó có tối đa một process lỗi, và toàn bộ mesage được gửi tới các non-faulty process đều được nhận.</p>
 <p><code>Run</code> được gọi là <code>deciding run</code> khi tồn tại ít nhất một process đạt <code>decision state</code>.</p>
 <h4 id="tính-chính-xác-của-consensus-protocol">
   Tính chính xác của Consensus protocol
@@ -363,25 +374,26 @@ Một configuration có thể <code>reachable</code> từ một initial configur
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h2>
+<p>Ta sẽ chứng minh bài toán bằng phản chứng. Nhưng trước khi đi vào chứng minh, chúng ta sẽ nêu lên 3 bổ đề mà chúng ta sẽ sử dụng trong chứng minh.</p>
 <h3 id="bổ-đề-1-lemma-1---tính-giao-hoán-của-schedule">
   Bổ đề 1 (Lemma 1) - Tính giao hoán của schedule
   <a class="heading-link" href="#b%e1%bb%95-%c4%91%e1%bb%81-1-lemma-1---t%c3%adnh-giao-ho%c3%a1n-c%e1%bb%a7a-schedule">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p><strong>Cho một configuration C, 2 scheduler $\sigma_1, \sigma_2$; $C_1 = \sigma_1(C)$, $C_2 = \sigma_2(C)$. Nếu tập hợp các process trong $\sigma_1$ và $\sigma_2$ không giao nhau, có thể apply $\sigma_1$ cho $C_2$, apply $\sigma_2$ cho $C_1$ và cả 2 đều cho ra cùng một configuration $C_3$ hay $C_3 = \sigma_2(\sigma_1(C)) = \sigma_1(\sigma_2(C))$</strong></p>
-<p><img src="https://i.imgur.com/7gvaKeq.png" alt=""></p>
+<p><strong>Cho một configuration C, 2 scheduler $\sigma_1, \sigma_2$; gọi $C_1 = \sigma_1(C)$, $C_2 = \sigma_2(C)$. Nếu tập hợp các process trong $\sigma_1$ và $\sigma_2$ không giao nhau, thì chúng ta có thể apply $\sigma_1$ cho $C_2$, apply $\sigma_2$ cho $C_1$ và cả 2 đều cho ra cùng một configuration $C_3$ hay $C_3 = \sigma_2(\sigma_1(C)) = \sigma_1(\sigma_2(C))$</strong></p>
+<p><img src="https://i.imgur.com/0hvyVtf.png" alt=""></p>
 <h4 id="chứng-minh-1">
   Chứng minh
   <a class="heading-link" href="#ch%e1%bb%a9ng-minh-1">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h4>
-<p>Đầu tiên ta thấy nếu một event $e \notin \sigma_1$ có thể apply vào <code>C</code> thì nó có thể apply vào $C_1$. Do đó chúng ta có thể apply $\sigma_2$ vào $C_1$, tương tự cho việc apply $\sigma_1$ vào $C_2$.</p>
-<p>Gọi $p(\sigma)$ là tập các process mà một schedule $\sigma$ tác động vào. Theo đề bài, ta có $p(\sigma_1) \cup p(sigma_2) = \emptyset$.</p>
+<p>Đầu tiên ta thấy nếu một event $e \notin \sigma_1$ có thể apply vào <code>C</code> thì nó có thể apply vào $C_1$ (Vì mỗi message có thể bị trễ một cách bất kỳ). Do đó chúng ta có thể apply $\sigma_2$ vào $C_1$, tương tự cho việc apply $\sigma_1$ vào $C_2$.</p>
+<p>Gọi $p(\sigma)$ là tập các process có liên quan đến một schedule $\sigma$. Theo đề bài, ta có $p(\sigma_1) \cup p(sigma_2) = \emptyset$.</p>
 <p>Do $\sigma_1$ và $\sigma_2$ chỉ thay đổi state của 2 tập process khác nhau trong C, nên việc thay đổi thứ tự apply giữa $\sigma_1$ và $\sigma_2$ sẽ không thay đổi <code>internal state</code> của các process. (1)</p>
-<p>Ngoài ra <code>message buffer</code> có tính giao hoán (tính chất của <code>multiset</code>). Nên việc thay đổi thứ tự gửi messages (từ việc apply $\sigma_1$ và $\sigma_2$) sẽ không thay đổi kết quả cuối cùng của <code>MB</code>. (2)</p>
-<p>Từ (1) và (2) ta có dpcm</p>
+<p>Ngoài ra <code>message buffer</code> có tính giao hoán (tính chất của <code>multiset</code>). Nên việc thay đổi thứ tự gửi các message (từ việc apply $\sigma_1$ và $\sigma_2$) sẽ không thay đổi kết quả cuối cùng của <code>MB</code>. (2)</p>
+<p>Từ (1) và (2) ta có dpcm.</p>
 <h3 id="bổ-đề-2">
   Bổ đề 2
   <a class="heading-link" href="#b%e1%bb%95-%c4%91%e1%bb%81-2">
@@ -418,14 +430,14 @@ Một configuration có thể <code>reachable</code> từ một initial configur
   </a>
 </h3>
 <p><strong>Cho <code>C</code> là một <code>bivalent</code> configuration của <code>P</code>, <code>e=(p,m)</code> là một <code>event</code> mà nó có thể apply cho <code>C</code>. Gọi <code>T</code> là tập hợp các có thể <code>reachable</code> từ C mà không apply <code>e</code>; và D= e(T) = {$e(E) | E \in T$ và e có thể apply cho E}. Chứng minh rằng D có chứa một <code>bivalent</code> configuration.</strong></p>
-<p>Hay nói một cách đơn giản hơn là, cho <code>C</code> là một <code>bivalent</code> configuration, <code>e=(p,m)</code> là một <code>event</code> mà nó có thể apply cho <code>C</code>. Tồn tại một <code>reachable</code> configuration <code>C'</code> từ <code>C</code> thoả mãn 2 điều kiện: <code>C'</code> là <code>bivalent</code> và <code>e</code> là event cuối cùng được apply.</p>
+<p>Hay nói một cách đơn giản hơn, cho <code>C</code> là một <code>bivalent</code> configuration, <code>e=(p,m)</code> là một <code>event</code> mà nó có thể apply cho <code>C</code>. Tồn tại một <code>reachable</code> configuration <code>C'</code> từ <code>C</code> thoả mãn 2 điều kiện: <code>C'</code> là <code>bivalent</code> và <code>e</code> là event cuối cùng được apply trước khi có <code>C'</code>.</p>
 <h4 id="chứng-minh-3">
   Chứng minh
   <a class="heading-link" href="#ch%e1%bb%a9ng-minh-3">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h4>
-<p>Vì message có thể bị trễ với thời gian không xác định trước (nhưng hữu hạn) nên nếu <code>e</code> có thể apply cho <code>C</code>, thì e cũng có thể apply cho $ C' \forall C' \in T$.</p>
+<p>Vì message có thể bị trễ với thời gian không xác định trước (nhưng hữu hạn) nên nếu <code>e</code> có thể apply cho <code>C</code>, thì e cũng có thể apply cho <code>C'</code> $\forall C' \in T$.</p>
 <p>Giả sử D chỉ có <code>univalent</code> configuration.</p>
 <p>Gọi $E_i$ là một <code>i-valent</code> reachable configuration từ C, $i \in {0,1}$. Do C là <code>bivalent</code> nên sẽ tồn tại $E_i$ với $i \in {0,1}$.</p>
 <p>Với mỗi $E_i$, có 2 trường hợp có thể xảy ra:</p>
@@ -439,29 +451,29 @@ Một configuration có thể <code>reachable</code> từ một initial configur
 <li>Và $F_i$ và $E_i$ có thể reachable từ một trong hai</li>
 </ul>
 <p>Từ đó ta có ta thấy D sẽ chứa cả <code>0-valent</code> và <code>1-valent</code>.</p>
-<p>Gọi 2 configuration $C_1$ và $C_2$ là hàng xóm (neighbors) nếu $\exists e | e(C_1) = C_2 \lor e(C_2) = C_1$</p>
+<p>Gọi 2 configuration $C_1$ và $C_2$ là hàng xóm (neighbors) của nhau nếu một trong hai là kết của của cái còn lại chỉ bằng một <code>step</code> duy nhất. Hay $\exists e | e(C_1) = C_2 \lor e(C_2) = C_1$.</p>
 <p>Dễ thấy tồn tại 2 hàng xóm $C_0$ và $C_1$ thoả mãn: $D_i=e(C_i)$ là <code>i-valent</code>,  $i \in {0,1}$.</p>
 <p>Không mất tính tổng quát, có thể giả sử $C_1 = e'(C_0)$ với <code>e'=(p', m')</code>.</p>
 <p>Ở đây cũng có 2 trường hợp có thể xảy ra:</p>
 <ul>
-<li>
-<p>Nếu <code>p != p'</code>, theo mệnh đề 1 ta có
-$D_1 = e(C_1) = e(e'(C_0)) = e'(e(C_0)) = e'(D_0)$
-Mà ta có $D_1$ là <code>1-valent</code>, $D_0$ là <code>0-valent</code> =&gt; vô lý
-<img src="https://i.imgur.com/dvbaKip.png" alt=""></p>
-</li>
-<li>
-<p>Nếu <code>p = p'</code>. Xem xét một <code>deciding run</code> bất kỳ từ $C_0$ mà <code>p</code> không tham gia bất cứ <code>step</code> nào.
-Gọi $\sigma$ là schedule tương ứng với <code>deciding run</code> đó;
-Gọi $A = \sigma(C_0)$
-Theo bổ đề một, $\sigma$ cũng có thể apply cho $D_i$. $E_i = \sigma(D_i)$; do $D_i$ là <code>i-valent</code> nên $E_i$ cũng là <code>i-valent</code>.
-Cũng theo bổ đề một
-$e(A) = e(\sigma(C_0)) = \sigma(e(C_0)) = \sigma(D_0)$ = <code>0-valent</code> (1)
-$e(e'(A)) = e(e'(\sigma(C_0))) = \sigma(e(e'(C_0))) = \sigma(e(C_1)) = \sigma(D_1) = <code>1-valent</code> (2)
-Từ (1) và (2), suy ra vô lý vì trái với giả thiết A là một <code>deciding run</code>.
-<img src="https://i.imgur.com/6EUMXi3.png" alt=""></p>
-</li>
+<li>Nếu <code>p != p'</code>, theo mệnh đề 1 ta có</li>
 </ul>
+<p>$D_1 = e(C_1) = e(e'(C_0)) = e'(e(C_0)) = e'(D_0)$</p>
+<p>Mà ta có $D_1$ là <code>1-valent</code>, $D_0$ là <code>0-valent</code> =&gt; vô lý</p>
+<p><img src="https://i.imgur.com/dvbaKip.png" alt=""></p>
+<ul>
+<li>Nếu <code>p = p'</code>. Xem xét một <code>deciding run</code> bất kỳ từ $C_0$ mà <code>p</code> không tham gia bất cứ <code>step</code> nào.</li>
+</ul>
+<p>Gọi $\sigma$ là schedule tương ứng với <code>deciding run</code> đó;</p>
+<p>Gọi $A = \sigma(C_0)$</p>
+<p>Theo bổ đề một, $\sigma$ cũng có thể apply cho $D_i$. $E_i = \sigma(D_i)$; do $D_i$ là <code>i-valent</code> nên $E_i$ cũng là <code>i-valent</code>.</p>
+<p>Cũng theo bổ đề một:</p>
+<pre><code>$e(A) = e(\sigma(C_0)) = \sigma(e(C_0)) = \sigma(D_0)$ = `0-valent` (1)
+
+$e(e'(A)) = e(e'(\sigma(C_0))) = \sigma(e(e'(C_0))) = \sigma(e(C_1)) = \sigma(D_1) = `1-valent` (2)
+</code></pre>
+<p>Từ (1) và (2), suy ra vô lý vì trái với giả thiết A là một <code>deciding run</code>.</p>
+<p><img src="https://i.imgur.com/6EUMXi3.png" alt=""></p>
 <p>Do vậy bất kể trường hợp nào ta cũng suy ra vô lý dpcm.</p>
 <h3 id="chứng-minh-mệnh-đề">
   Chứng minh mệnh đề
