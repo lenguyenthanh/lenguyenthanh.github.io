@@ -13,7 +13,7 @@
       <pubDate>Wed, 19 Jan 2022 11:35:12 +0000</pubDate>
       
       <guid>https://lenguyenthanh.com/blog/flp-imposibility/</guid>
-      <description>Giới thiệu    FLP Impossibillity là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, ba tác giả (Fischer, Lynch, Paterson) đã chỉ ra rằng trong những hệ thống phân tán không đồng bộ mà nó có thể chứa các process lỗi thì không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi.</description>
+      <description>Giới thiệu    FLP Impossibillity là một trong những paper quan trọng nhất về hệ thống phân tán, trong đó nó chỉ ra một số giới hạn mà chúng ta không thể vượt qua được. Ở đây, ba tác giả (Fischer, Lynch, Paterson) đã chỉ ra rằng trong những hệ thống phân tán không đồng bộ mà nó có thể chứa các process lỗi thì không tồn tại một thuật toán đồng thuận nào mà nó có thể đảm bảo sự kết thúc của việc thực thi.</description>
     </item>
     
     <item>
