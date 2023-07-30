@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Thanh Le - You should not use traverseWithIndexM</title>
+        <link rel="stylesheet" href="../stylesheet.css" />
+        <link rel="stylesheet" href="../css/syntax.css" />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../resume.pdf">Resume</a>
+                <a href="../archive.html">Archive</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1>You should not use traverseWithIndexM</h1>
+            <article>
+    <section class="header">
+        Posted on July 30, 2023
+        
+    </section>
+    <section>
+        <h2 id="what-is-traversewithindexm">What is traverseWithIndexM</h2>
+<p>First thing first, before we don’t want to use something, we need to know exactly what it is right? The signature of <a href="https://github.com/typelevel/cats/blob/v2.9.0/core/src/main/scala/cats/Traverse.scala#L158">traverseWithIndexM</a> is below:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">/**</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> Akin to <span class="co">[[</span>traverse<span class="co">]],</span> but also provides the value<span class="co">'</span>s index in</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> structure F when calling the function<span class="co">.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> This performs the traversal in a single pass but requires that</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> effect G is monadic<span class="co">.</span> An applicative traversal can be performed in</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> two passes using <span class="co">[[</span>zipWithIndex<span class="co">]]</span> followed by <span class="co">[[</span>traverse<span class="co">]].</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   <span class="co">*/</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> traverseWithIndexM<span class="op">[</span>G<span class="op">[</span>_<span class="op">],</span> A<span class="op">,</span> B<span class="op">](</span>fa<span class="op">:</span> F<span class="op">[</span>A<span class="op">])(</span>f<span class="op">:</span> <span class="op">(</span>A<span class="op">,</span> <span class="bu">Int</span><span class="op">)</span> <span class="op">=&gt;</span> G<span class="op">[</span>B<span class="op">])(</span><span class="kw">implicit</span> G<span class="op">:</span> Monad<span class="op">[</span>G<span class="op">]):</span> G<span class="op">[</span>F<span class="op">[</span>B<span class="op">]]</span></span></code></pre></div>
+<p>It is basically equal to <em>zipWithIndex.traverse</em> (or <em>zipWithIndex.map.sequence</em>), but it seems to be faster because it traverses the whole collection in one pass (with a small catch which is the effect <em>G</em> has to be a <em>Monad</em>). But is it? Let’s find by doing some benchmark.</p>
+<h2 id="benchmark">Benchmark</h2>
+<p>We’ll compare performance of three isomorphic functions: <em>traverseWithIndexM</em> vs <em>zipWithIndex.traverse</em> and <em>zipWithIndex.map.squence</em>. We can already suspect that the third one will be slower than the second one, but let the reality confirms our prediction.</p>
+<p>We’ll use <a href="https://openjdk.org/projects/code-tools/jmh/">jmh</a> with <a href="https://scala-cli.virtuslab.org/">scala-cli</a> to do our benchmark (it’s always amazed me, how so easy it is to do these kinds of benchmarks, thanks Scala team for that), and here is the code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">//&gt; using scala 3.3.0</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">//&gt; using toolkit typelevel:latest</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> bench</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> cats<span class="op">.</span>syntax<span class="op">.</span>all<span class="op">.*</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> org<span class="op">.</span>openjdk<span class="op">.</span>jmh<span class="op">.</span>annotations<span class="op">.*</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> java<span class="op">.</span>util<span class="op">.</span>concurrent<span class="op">.</span><span class="ex">TimeUnit</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> org<span class="op">.</span>openjdk<span class="op">.</span>jmh<span class="op">.</span>infra<span class="op">.</span>Blackhole</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>@<span class="fu">State</span><span class="op">(</span>Scope<span class="op">.</span><span class="ex">Thread</span><span class="op">)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>@<span class="fu">BenchmarkMode</span><span class="op">(</span><span class="ex">Array</span><span class="op">(</span>Mode<span class="op">.</span>Throughput<span class="op">))</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>@<span class="fu">OutputTimeUnit</span><span class="op">(</span><span class="ex">TimeUnit</span><span class="op">.</span>SECONDS<span class="op">)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>@<span class="fu">Measurement</span><span class="op">(</span>iterations <span class="op">=</span> <span class="dv">15</span><span class="op">,</span> timeUnit <span class="op">=</span> <span class="ex">TimeUnit</span><span class="op">.</span>SECONDS<span class="op">,</span> time <span class="op">=</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>@<span class="fu">Warmup</span><span class="op">(</span>iterations <span class="op">=</span> <span class="dv">15</span><span class="op">,</span> timeUnit <span class="op">=</span> <span class="ex">TimeUnit</span><span class="op">.</span>SECONDS<span class="op">,</span> time <span class="op">=</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>@<span class="fu">Fork</span><span class="op">(</span><span class="dv">3</span><span class="op">)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>@<span class="fu">Threads</span><span class="op">(</span>value <span class="op">=</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CatsTraverseWithIndex<span class="op">:</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">private</span><span class="op">[</span><span class="kw">this</span><span class="op">]</span> <span class="kw">val</span> Work<span class="op">:</span> <span class="ex">Long</span> <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  @<span class="fu">Param</span><span class="op">(</span><span class="ex">Array</span><span class="op">(</span><span class="st">&quot;50&quot;</span><span class="op">,</span> <span class="st">&quot;1000&quot;</span><span class="op">,</span> <span class="st">&quot;100000&quot;</span><span class="op">,</span> <span class="st">&quot;10000000&quot;</span><span class="op">))</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> size<span class="op">:</span> <span class="bu">Int</span> <span class="op">=</span> _</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> xs<span class="op">:</span> <span class="ex">List</span><span class="op">[</span><span class="bu">Int</span><span class="op">]</span> <span class="op">=</span> _</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  @Setup</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> setup <span class="op">=</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    xs <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to size<span class="op">).</span>toList</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  @Benchmark</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> traverseWithIndexM <span class="op">=</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    xs<span class="op">.</span>traverseWithIndexM<span class="op">:</span> <span class="op">(</span>x<span class="op">,</span> i<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      Blackhole<span class="op">.</span><span class="fu">consumeCPU</span><span class="op">(</span>Work<span class="op">)</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>      <span class="op">(</span>x <span class="op">+</span> i<span class="op">).</span>some</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  @Benchmark</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> zipMapSequence <span class="op">=</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    xs<span class="op">.</span>zipWithIndex<span class="op">.</span>map<span class="op">:</span> <span class="op">(</span>x<span class="op">,</span> i<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      Blackhole<span class="op">.</span><span class="fu">consumeCPU</span><span class="op">(</span>Work<span class="op">)</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="op">(</span>x <span class="op">+</span> i<span class="op">).</span>some</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>sequence</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  @Benchmark</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> zipTraverse <span class="op">=</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    xs<span class="op">.</span>zipWithIndex<span class="op">.</span>traverse<span class="op">:</span> <span class="op">(</span>x<span class="op">,</span> i<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>      Blackhole<span class="op">.</span><span class="fu">consumeCPU</span><span class="op">(</span>Work<span class="op">)</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>      <span class="op">(</span>x <span class="op">+</span> i<span class="op">).</span>some</span></code></pre></div>
+<p>And we can run it with <em>scala-cli –jmh CatsTraverseWithIndex.scala</em>. But if you want to run that by yourself, you’d better to prepare some coffee and something to kill time (it’ll take 1 hours or so to run the whole things). But don’t worry, I already done that for you, here is the result:</p>
+<pre><code># JMH version: 1.29
+# VM version: JDK 20.0.2, OpenJDK 64-Bit Server VM, 20.0.2+9
+# VM invoker: /Library/Java/JavaVirtualMachines/temurin-20.jdk/Contents/Home/bin/java
+# VM options: &lt;none&gt;
+Benchmark                                   (size)   Mode  Cnt       Score      Error  Units
+CatsTraverseWithIndex.traverseWithIndexM        50  thrpt   45  234343.000 ±  828.583  ops/s
+CatsTraverseWithIndex.traverseWithIndexM      1000  thrpt   45    9229.621 ±   26.439  ops/s
+CatsTraverseWithIndex.traverseWithIndexM    100000  thrpt   45      62.792 ±    0.482  ops/s
+CatsTraverseWithIndex.traverseWithIndexM  10000000  thrpt   45       0.320 ±    0.011  ops/s
+CatsTraverseWithIndex.zipMapSequence            50  thrpt   45  493576.533 ± 2799.970  ops/s
+CatsTraverseWithIndex.zipMapSequence          1000  thrpt   45   17072.587 ±   52.702  ops/s
+CatsTraverseWithIndex.zipMapSequence        100000  thrpt   45     133.627 ±    0.631  ops/s
+CatsTraverseWithIndex.zipMapSequence      10000000  thrpt   45       0.310 ±    0.049  ops/s
+CatsTraverseWithIndex.zipTraverse               50  thrpt   45  559966.293 ± 7139.022  ops/s
+CatsTraverseWithIndex.zipTraverse             1000  thrpt   45   19432.657 ±  116.109  ops/s
+CatsTraverseWithIndex.zipTraverse           100000  thrpt   45     126.553 ±    2.124  ops/s
+CatsTraverseWithIndex.zipTraverse         10000000  thrpt   45       0.419 ±    0.023  ops/s</code></pre>
+<p>We can see that <em>traverseWithIndexM</em> is always slower than its colleagues. More than two times slower when the size of the collections are small, the gap is smaller when the size is increased. But that not the only problem with <em>traverseWithIndexM</em>, here is the flamegraph produced with <a href="https://github.com/async-profiler/async-profiler">async-profiler</a> of <em>traverseWithIndexM</em> and <em>zip.traverse</em> when running benchmark with size of 1000, side by side.</p>
+<figure>
+<img src="../images/2023-07-flamegraph.png" alt="flamegraph" />
+<figcaption aria-hidden="true">flamegraph</figcaption>
+</figure>
+<p><em>traverseWithIndexM</em> creates a huge call stacks (that is something we should avoid) in contrast of <em>zipWithIndex.traverse</em></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>We should prefer <em>zipWithIndex.traverse</em> over <em>traverseWithIndexM</em> in any case. We lose a bit of elegant with it, but we gain significant performance and reduce stackoverflow chance, which is a good trade off.</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+
+            Site proudly generated by
+
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </footer>
+    </body>
+</html>
