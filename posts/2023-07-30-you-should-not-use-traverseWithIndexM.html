@@ -26,7 +26,18 @@
         
     </section>
     <section>
-        <h2 id="what-is-traversewithindexm">What is traverseWithIndexM</h2>
+        <div class="info">
+            
+            Tags: <a title="All pages tagged 'scala'." href="../tags/scala.html">scala</a>, <a title="All pages tagged 'functional programming'." href="../tags/functional%20programming.html">functional programming</a>, <a title="All pages tagged 'cats'." href="../tags/cats.html">cats</a>, <a title="All pages tagged 'typelevel'." href="../tags/typelevel.html">typelevel</a>
+            
+        </div>
+        <p>In this post, We’ll talk about Scala <a href="https://typelevel.org/cats">cats</a>‘s traverseWithIndexM’:</p>
+<ul>
+<li>What is traverseWithIndexM</li>
+<li>Benchmark of traverseWithIndexM in comparison with other isomorphic functions</li>
+<li>Conclusion</li>
+</ul>
+<h2 id="what-is-traversewithindexm">What is traverseWithIndexM</h2>
 <p>First thing first, before we don’t want to use something, we need to know exactly what it is right? The signature of <a href="https://github.com/typelevel/cats/blob/v2.9.0/core/src/main/scala/cats/Traverse.scala#L158">traverseWithIndexM</a> is below:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">/**</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="co">*</span> Akin to <span class="co">[[</span>traverse<span class="co">]],</span> but also provides the value<span class="co">'</span>s index in</span>
