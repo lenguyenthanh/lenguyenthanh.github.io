@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Thanh Le - You should not use traverseWithIndexM</title>
+        <title>Thanh Le - You Should Not Use traverseWithIndexM</title>
         <link rel="stylesheet" href="../stylesheet.css" />
         <link rel="stylesheet" href="../css/syntax.css" />
     </head>
@@ -19,7 +19,7 @@
         </header>
 
         <main role="main">
-            <h1>You should not use traverseWithIndexM</h1>
+            <h1>You Should Not Use traverseWithIndexM</h1>
             <article>
     <section class="header">
         Posted on July 30, 2023
@@ -117,7 +117,7 @@ CatsTraverseWithIndex.zipTraverse               50  thrpt   45  559966.293 ± 71
 CatsTraverseWithIndex.zipTraverse             1000  thrpt   45   19432.657 ±  116.109  ops/s
 CatsTraverseWithIndex.zipTraverse           100000  thrpt   45     126.553 ±    2.124  ops/s
 CatsTraverseWithIndex.zipTraverse         10000000  thrpt   45       0.419 ±    0.023  ops/s</code></pre>
-<p>We can see that <em>traverseWithIndexM</em> is always slower than its colleagues. More than two times slower when the size of the collections are small, the gap is smaller when the size is increased. But that not the only problem with <em>traverseWithIndexM</em>, here is the flamegraph produced with <a href="https://github.com/async-profiler/async-profiler">async-profiler</a> of <em>traverseWithIndexM</em> and <em>zip.traverse</em> when running benchmark with size of 1000, side by side.</p>
+<p>In all benchmarks, higher numbers are better. We can see that <em>traverseWithIndexM</em> is always slower than its colleagues. More than two times slower when the size of the collections are small, the gap is smaller when the size is increased. But that not the only problem with <em>traverseWithIndexM</em>, here is the flamegraph produced with <a href="https://github.com/async-profiler/async-profiler">async-profiler</a> of <em>traverseWithIndexM</em> and <em>zip.traverse</em> when running benchmark with size of 1000, side by side.</p>
 <figure>
 <img src="../images/2023-07-flamegraph.png" alt="flamegraph" />
 <figcaption aria-hidden="true">flamegraph</figcaption>
